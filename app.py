@@ -18,7 +18,7 @@ def authenticate():
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
 
-authenticate()
+# authenticate()
 
 @app.route('/read-file', methods=['GET'])
 def read_file():
