@@ -6,6 +6,7 @@ import os
 app = Flask(__name__)
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
+# ✅ NO authenticate(), just use token.json directly
 creds = Credentials.from_authorized_user_file('token.json', SCOPES)
 
 @app.route('/read-file', methods=['GET'])
