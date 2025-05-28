@@ -1,17 +1,16 @@
 from flask import Flask, request, jsonify
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-import os
+import os, json
 
 app = Flask(__name__)
+
+# Required scopes
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
-import json
-import os
-from google.oauth2 import service_account
 
+# Load credentials from env var
 creds_info = json.loads(os.environ['GOOGLE_CREDS'])
-creds = service_account.Credentials.from_service_account_info(creds_info)
-
+creds = service_account.Credentials.from_service_account_info(creds_info, scopes=SCOPES)
 
 @app.route('/read-file', methods=['GET'])
 def read_file():
@@ -37,5 +36,7 @@ def read_file():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# ✅ THIS PART IS CRITICAL FOR RENDER
 if __name__ == '__main__':
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
